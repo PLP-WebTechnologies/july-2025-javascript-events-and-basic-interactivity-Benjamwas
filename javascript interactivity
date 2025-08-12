@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Web Page</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+        <h1>Interactive Web Page</h1>
+    </header>
+
+    <!-- Interactive Section 1: Click Counter -->
+    <section>
+        <h2>Click Counter</h2>
+        <button id="countBtn">Click Me!</button>
+        <p id="countDisplay">Clicks: 0</p>
+    </section>
+
+    <!-- Interactive Section 2: Color Changer -->
+    <section>
+        <h2>Background Color Changer</h2>
+        <button id="colorBtn">Change Background Color</button>
+    </section>
+
+    <!-- Custom Form with Validation -->
+    <section>
+        <h2>Contact Form</h2>
+        <form id="contactForm">
+            <label>Name:</label>
+            <input type="text" id="name" placeholder="Enter your name">
+            
+            <label>Email:</label>
+            <input type="text" id="email" placeholder="Enter your email">
+            
+            <label>Message:</label>
+            <textarea id="message" placeholder="Write your message"></textarea>
+            
+            <button type="submit">Submit</button>
+        </form>
+        <p id="formFeedback"></p>
+    </section>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
+
+// ====================
+// PART 1: Variables & Conditionals
+// ====================
+let clickCount = 0;
+let colors = ["#ff9999", "#99ff99", "#9999ff", "#ffff99"];
+
+// ====================
+// PART 2: Functions
+// ====================
+function updateClickCount() {
+    clickCount++;
+    document.getElementById("countDisplay").textContent = `Clicks: ${clickCount}`;
+}
+
+function changeBackgroundColor() {
+    let randomColor = colors[Math.floor(Math.random() * colors.length)];
+    document.body.style.backgroundColor = randomColor;
+}
+
+// ====================
+// PART 3: Loops
+// Example 1: Display colors in console
+for (let i = 0; i < colors.length; i++) {
+    console.log("Available color:", colors[i]);
+}
+
+// Example 2: Reverse loop
+for (let i = colors.length - 1; i >= 0; i--) {
+    console.log("Reverse color list:", colors[i]);
+}
+
+// ====================
+// PART 4: DOM Interactions
+// ====================
+document.getElementById("countBtn").addEventListener("click", updateClickCount);
+document.getElementById("colorBtn").addEventListener("click", changeBackgroundColor);
+
+// ====================
+// Form Validation (Custom, no HTML5-only validation)
+// ====================
+document.getElementById("contactForm").addEventListener("submit", function(event) {
+    event.preventDefault(); // Stop form from submitting
+
+    let name = document.getElementById("name").value.trim();
+    let email = document.getElementById("email").value.trim();
+    let message = document.getElementById("message").value.trim();
+    let feedback = document.getElementById("formFeedback");
+
+    if (name === "" || email === "" || message === "") {
+        feedback.textContent = "⚠ Please fill out all fields.";
+        feedback.style.color = "red";
+        return;
+    }
+
+    // Simple email pattern check
+    let emailPattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
+    if (!email.match(emailPattern)) {
+        feedback.textContent = "⚠ Please enter a valid email address.";
+        feedback.style.color = "red";
+        return;
+    }
+
+    feedback.textContent = "✅ Thank you! Your form has been submitted.";
+    feedback.style.color = "green";
+
+    // Clear the form
+    document.getElementById("contactForm").reset();
+});
